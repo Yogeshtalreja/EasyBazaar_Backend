@@ -14,58 +14,59 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
+@Table(name = "tbl_user")
 public class User {
     @Id
-    @Column(name = "tbl_id", nullable = false)
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "tbl_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "tbl_rating")
+    @Column(name = "rating")
     private Long rating;
 
-    @Column(name = "tbl_registration_date")
+    @Column(name = "registration_date")
     private LocalDate registrationDate;
 
-    @Column(name = "tbl_image_path")
+    @Column(name = "image_path")
     private String imagePath;
 
-    @Column(name = "tbl_image_name")
+    @Column(name = "image_name")
     private String imageName;
 
-    @Column(name = "tbl_isActive")
+    @Column(name = "isActive")
     private Boolean isActive;
 
-    @Column(name = "tbl_address")
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "tbl_email" , unique = true)
+    @Column(name = "email" , unique = true)
     private String email;
 
-    @Column(name = "tbl_password")
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "tbl_isVerified")
+    @Column(name = "isVerified")
     private Boolean isVerified;
 
-    @Column(name = "tbl_isLive")
+    @Column(name = "isLive")
     private Boolean isLive;
 
-    @Column(name = "tbl_contact_number")
+    @Column(name = "contact_number")
     private String contactNumber;
 
-    @Column(name = "tbl_cnic", unique = true)
+    @Column(name = "cnic", unique = true)
     private String cnic;
 
-    @Column(name = "tbl_dob")
+    @Column(name = "dob")
     private LocalDate dob;
 
-    @Column(name = "tbl_gender")
+    @Column(name = "gender")
     private GenderEnum gender;
 
-    @Column(name = "tbl_user_type")
+    @Column(name = "user_type")
     private UserType userType;
 
 
