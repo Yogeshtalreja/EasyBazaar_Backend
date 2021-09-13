@@ -55,7 +55,7 @@ public class ProductVariant {
     @JsonIgnore
     private Company company;
 
-    @ManyToMany(mappedBy = "product",cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<Size> availableSizes;
 
     @ElementCollection(targetClass = ColorEnum.class)
