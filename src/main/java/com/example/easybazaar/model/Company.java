@@ -1,8 +1,9 @@
 package com.example.easybazaar.model;
 
 import com.example.easybazaar.enums.StateEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.web.servlet.view.script.ScriptTemplateConfig;
+
 
 import javax.persistence.*;
 
@@ -31,7 +32,13 @@ public class Company {
     @Column(name = "email")
     private String email;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private StateEnum state;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JsonIgnore
+    private User user;
 
 }

@@ -1,6 +1,7 @@
 package com.example.easybazaar.model;
 
 import com.example.easybazaar.enums.StateEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,4 +27,9 @@ public class City {
 
     @Column(name = "state")
     private StateEnum state;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JsonIgnore
+    private User user;
 }

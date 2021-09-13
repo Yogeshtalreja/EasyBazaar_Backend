@@ -1,5 +1,6 @@
 package com.example.easybazaar.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,5 +26,10 @@ public class ProductImages {
 
     @Column(name = "path")
     private String path;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    @JsonIgnore
+    private ProductVariant product;
 
 }

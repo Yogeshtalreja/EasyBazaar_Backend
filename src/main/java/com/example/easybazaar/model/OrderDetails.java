@@ -1,5 +1,6 @@
 package com.example.easybazaar.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,4 +27,13 @@ public class OrderDetails {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    @JsonIgnore
+    private ProductVariant product;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    @JsonIgnore
+    private Order order;
 }

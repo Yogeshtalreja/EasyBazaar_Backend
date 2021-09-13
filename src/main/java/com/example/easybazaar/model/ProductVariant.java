@@ -1,9 +1,14 @@
 package com.example.easybazaar.model;
 
+import com.example.easybazaar.enums.ColorEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import java.util.Set;
+
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -41,5 +46,39 @@ public class ProductVariant {
 
     @Column(name = "weight")
     private Long weight;
+
+    @Column(name = "seller_id")
+    private Long sellerId;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id",referencedColumnName = "id")
+    @JsonIgnore
+    private Company company;
+
+    @ManyToMany(mappedBy = "product",cascade = {CascadeType.ALL})
+    private List<Size> availableSizes;
+
+    @ElementCollection(targetClass = ColorEnum.class)
+    @Enumerated(EnumType.STRING)
+    private Set<ColorEnum> availableColors;
+
+    @ManyToOne
+    @JoinColumn(name = "wear_id",referencedColumnName = "id")
+    @JsonIgnore
+    private WearSubCategoryAttributes wearSubCategory;
+
+    @ManyToOne
+    @JoinColumn(name = "electronics_id",referencedColumnName = "id")
+    @JsonIgnore
+    private ElectronicSubCategoriesAttributes electronicSubCategory;
+
+    @OneToMany(mappedBy = "product",cascade = {CascadeType.ALL})
+    private List<ProductImages> productImages;
+
+    @OneToMany(mappedBy = "product",cascade = {CascadeType.ALL})
+    private List<OrderDetails> orderDetails;
+
+
+
 
 }

@@ -1,10 +1,12 @@
 package com.example.easybazaar.model;
 
 import com.example.easybazaar.enums.OrderStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -34,4 +36,6 @@ public class Order {
     @Column(name = "order_id")
     private String orderId;
 
+    @OneToMany(mappedBy = "order",cascade = {CascadeType.ALL})
+    private List<OrderDetails> orderDetails;
 }

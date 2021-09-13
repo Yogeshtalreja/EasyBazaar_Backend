@@ -1,12 +1,15 @@
 package com.example.easybazaar.model;
 
-import com.example.easybazaar.enums.GenderEnum;
+
 import com.example.easybazaar.enums.UserType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -23,6 +26,9 @@ public class User {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "seller_company_name")
+    private String companyName;
 
     @Column(name = "rating")
     private Long rating;
@@ -64,10 +70,28 @@ public class User {
     private LocalDate dob;
 
     @Column(name = "gender")
-    private GenderEnum gender;
+    @Enumerated(EnumType.STRING)
+    private String gender;
 
+    @ElementCollection(targetClass = UserType.class)
     @Column(name = "user_type")
-    private UserType userType;
+    @Enumerated(EnumType.STRING)
+    private Set<UserType> userType;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id",referencedColumnName = "id")
+    @JsonIgnore
+    private City city;
+
+    @ManyToMany(mappedBy = "user",cascade = {CascadeType.ALL})
+    private List<ProductVariant> purchaseProducts   ;
+
+    @OneToMany(mappedBy = "user",cascade = {CascadeType.ALL})
+    private List<BankAccountDetails> bankAccountDetails;
+
+    
+
+
 
 
 }

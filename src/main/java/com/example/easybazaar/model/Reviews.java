@@ -20,5 +20,8 @@ public class Reviews {
     @Column(name = "review")
     private String review;
 
+    @Column(name = "stars")
+    private Integer stars;
+
 
 }
