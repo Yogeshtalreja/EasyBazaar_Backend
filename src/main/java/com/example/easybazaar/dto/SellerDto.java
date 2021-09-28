@@ -18,6 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 public class SellerDto {
+    private Long id;
     private String name;
     private String companyName;
     private Long rating;
