@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Table(name = "tbl_city")
-public class City {
+public class    City {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)

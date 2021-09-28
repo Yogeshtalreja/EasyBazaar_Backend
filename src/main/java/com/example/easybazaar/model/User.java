@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -84,14 +85,10 @@ public class User {
     private City city;
 
     @ManyToMany(cascade = {CascadeType.ALL})
-    private List<ProductVariant> purchaseProducts   ;
+    private List<ProductVariant> purchaseProducts;
 
     @OneToMany(cascade = {CascadeType.ALL})
     private List<BankAccountDetails> bankAccountDetails;
-
-    
-
-
 
 
 }
