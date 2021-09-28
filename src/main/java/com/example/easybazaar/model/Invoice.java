@@ -3,6 +3,7 @@ package com.example.easybazaar.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -19,6 +20,13 @@ public class Invoice {
 
     @Column(name = "invoice_number")
     private String invoiceNumber;
+
+
+    @OneToOne
+    private Transaction transaction;
+
+    @OneToMany
+    private List<Reviews> reviews;
 
 
 
