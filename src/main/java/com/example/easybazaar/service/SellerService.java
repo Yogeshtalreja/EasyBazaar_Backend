@@ -15,7 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+
 import java.util.List;
 
 @Service
@@ -57,6 +57,7 @@ public class SellerService {
     }
 
     private void addSellerInformation(SellerDto sellerDto, User user) throws ResourceNotFoundException {
+
         if (sellerDto.getName()!=null)
             user.setName(sellerDto.getName());
         if (sellerDto.getAddress()!=null)

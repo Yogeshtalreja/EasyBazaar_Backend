@@ -71,8 +71,7 @@ public class User {
     private LocalDate dob;
 
     @Column(name = "gender")
-    @Enumerated(EnumType.STRING)
-    private GenderEnum gender;
+    private String gender;
 
     @Column(name = "user_type")
     private String userType;
