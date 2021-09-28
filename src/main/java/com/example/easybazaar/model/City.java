@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -28,8 +29,7 @@ public class    City {
     @Column(name = "state")
     private StateEnum state;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @OneToMany(cascade = {CascadeType.ALL})
     @JsonIgnore
-    private User user;
+    private List<User> user;
 }

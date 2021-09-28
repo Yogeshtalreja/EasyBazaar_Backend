@@ -79,7 +79,7 @@ public class SellerController {
 
     }
 
-    @PostMapping("/allSellers}")
+    @PostMapping("/allSellers")
     public ResponseEntity<?> allSellers(@RequestBody SearchDto searchDto){
         CommonResponseModel<AllSellersDto> responseModel = new CommonResponseModel<>();
         try {

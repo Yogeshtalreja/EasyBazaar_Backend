@@ -40,7 +40,7 @@ public class SellerService {
         User user = new User();
 
         addSellerInformation(sellerDto, user);
-        user.setUserType(Collections.singleton(UserType.SELLER));
+        user.setUserType(UserType.SELLER.toString());
         user.setIsActive(true);
 
         return  userRepository.save(user);
@@ -96,9 +96,11 @@ public class SellerService {
         return userRepository.save(user);
     }
 
-    public AllSellersDto allSellersInfo(SearchDto searchDto){
+    public List<AllSellersDto> allSellersInfo(SearchDto searchDto){
 
         Pageable pageable = PageRequest.of(searchDto.getPageNo(), searchDto.getPageSize());
-        return (AllSellersDto) userRepository.allSellers(pageable);
+        List<AllSellersDto> allSellers =  userRepository.allSellers(pageable);
+
+        return allSellers;
     }
 }

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -75,13 +74,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
 
-    @ElementCollection(targetClass = UserType.class)
     @Column(name = "user_type")
-    @Enumerated(EnumType.STRING)
-    private Set<UserType> userType;
+    private String userType;
 
     @ManyToOne
-    @JsonIgnore
     private City city;
 
     @ManyToMany(cascade = {CascadeType.ALL})
@@ -89,6 +85,10 @@ public class User {
 
     @OneToMany(cascade = {CascadeType.ALL})
     private List<BankAccountDetails> bankAccountDetails;
+
+
+
+
 
 
 }
