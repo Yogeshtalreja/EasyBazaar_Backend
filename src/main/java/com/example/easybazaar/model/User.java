@@ -76,13 +76,14 @@ public class User {
     @Column(name = "user_type")
     private String userType;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = City.class)
+    @JoinColumn(name = "city_id")
     private City city;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL},targetEntity = ProductVariant.class)
     private List<ProductVariant> purchaseProducts;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL},targetEntity = BankAccountDetails.class)
     private List<BankAccountDetails> bankAccountDetails;
 
 

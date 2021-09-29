@@ -25,7 +25,7 @@ public class Invoice {
     @OneToOne
     private Transaction transaction;
 
-    @OneToMany
+    @OneToMany(targetEntity = Reviews.class)
     private List<Reviews> reviews;
 
 

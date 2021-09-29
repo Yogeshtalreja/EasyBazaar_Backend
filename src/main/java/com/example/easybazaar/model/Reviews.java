@@ -24,7 +24,7 @@ public class Reviews {
     @Column(name = "stars")
     private Integer stars;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Invoice.class)
     @JsonIgnore
     private Invoice invoice;
 

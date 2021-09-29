@@ -29,4 +29,7 @@ public class BankAccountDetails {
     @Column(name = "ibian_number")
     private String ibianNumber;
 
+    @ManyToOne(targetEntity = User.class)
+    private User user;
+
 }
