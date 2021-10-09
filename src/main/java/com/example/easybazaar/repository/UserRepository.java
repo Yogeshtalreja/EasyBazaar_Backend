@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query("select new com.example.easybazaar.dto.AllCustomersDto(user.id,user.name,user.registrationDate,user.imagePath,user.imageName,user.isActive,user.address,user.email,user.isVerified,user.contactNumber,user.cnic,user.dob,user.gender,user.city.name) from User user where user.isActive=true and user.userType='CUSTOMER' ")
     public List<AllCustomersDto> allCustomers(Pageable pageable);
+
+    public User findByIdAndUserTypeAndIsActive(Long id, String userType,Boolean isActive);
 }

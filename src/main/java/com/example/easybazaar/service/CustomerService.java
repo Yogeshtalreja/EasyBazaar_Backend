@@ -106,7 +106,8 @@ public class CustomerService {
         }
 
         if (customerDto.getCityId()!=null){
-            City city = cityRepository.findById(customerDto.getCityId()).orElseThrow(()-> new ResourceNotFoundException
+            City city = cityRepository.findById(customerDto.getCityId())
+                    .orElseThrow(()-> new ResourceNotFoundException
                     ("City with ID "+customerDto.getCityId()+" Not Found"));
             user.setCity(city);
         }

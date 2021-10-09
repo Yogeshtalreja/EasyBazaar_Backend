@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.Set;
 
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -50,17 +51,16 @@ public class ProductVariant {
     @Column(name = "seller_id")
     private Long sellerId;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id",referencedColumnName = "id")
-    @JsonIgnore
-    private Company company;
+
+    @Column(name = "company_name")
+    private String company;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     private List<Size> availableSizes;
 
-    @ElementCollection(targetClass = ColorEnum.class)
-    @Enumerated(EnumType.STRING)
-    private Set<ColorEnum> availableColors;
+    @Column(name = "colors")
+    @ManyToMany
+    private Set<Color> availableColors;
 
     @ManyToOne
     @JoinColumn(name = "wear_id",referencedColumnName = "id")

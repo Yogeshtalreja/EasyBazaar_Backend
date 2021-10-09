@@ -1,8 +1,10 @@
 package com.example.easybazaar.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -61,5 +63,14 @@ public class ElectronicSubCategoriesAttributes {
 
     @Column(name = "battery_life")
     private Long batteryLife;
+
+    @Column(name = "products")
+    @OneToMany(cascade = {CascadeType.ALL},targetEntity = ProductVariant.class)
+    private List<ProductVariant> products;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id",referencedColumnName = "id")
+    @JsonIgnore
+    private Category category;
 
 }

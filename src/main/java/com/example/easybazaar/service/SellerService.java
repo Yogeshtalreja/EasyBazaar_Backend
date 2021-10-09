@@ -1,22 +1,24 @@
 package com.example.easybazaar.service;
 
+import com.example.easybazaar.dto.AddProductDto;
+import com.example.easybazaar.dto.AllSellerProductsDto;
 import com.example.easybazaar.dto.AllSellersDto;
 import com.example.easybazaar.dto.SellerDto;
 import com.example.easybazaar.dto.search.SearchDto;
 import com.example.easybazaar.enums.UserType;
 import com.example.easybazaar.exceptions.ResourceNotFoundException;
-import com.example.easybazaar.model.City;
-import com.example.easybazaar.model.User;
-import com.example.easybazaar.repository.CityRepository;
-import com.example.easybazaar.repository.UserRepository;
+import com.example.easybazaar.model.*;
+import com.example.easybazaar.repository.*;
 import com.example.easybazaar.utilities.ValidationUtility;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -24,7 +26,9 @@ public class SellerService {
 
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
-
+    private final SizeRepository sizeRepository;
+    private final ProductVariantRepository productVariantRepository;
+    private final ColorRepository colorRepository;
     public User addSeller(SellerDto sellerDto) throws ResourceNotFoundException {
 
 
@@ -99,9 +103,83 @@ public class SellerService {
 
     public List<AllSellersDto> allSellersInfo(SearchDto searchDto){
 
+
         Pageable pageable = PageRequest.of(searchDto.getPageNo(), searchDto.getPageSize());
         List<AllSellersDto> allSellers =  userRepository.allSellers(pageable);
 
+
         return allSellers;
     }
+
+
+    public ProductVariant addProduct(AddProductDto addProductDto) throws ResourceNotFoundException{
+
+        if (addProductDto.getSellerId()==null)
+            throw new ResourceNotFoundException("Seller Id is Must");
+        try{
+            User seller = userRepository.findByIdAndUserTypeAndIsActive(addProductDto.getSellerId(), "SELLER",true );
+            if (seller == null)
+                throw new ResourceNotFoundException("Seller Not Found");
+
+            ProductVariant newProduct = new ProductVariant();
+
+            if(addProductDto.getName()!=null)
+                newProduct.setName(addProductDto.getName());
+            if(addProductDto.getCompany()!=null)
+                newProduct.setCompany(addProductDto.getCompany());
+            if(addProductDto.getDescription()!=null)
+                newProduct.setDescription(newProduct.getDescription());
+            if(addProductDto.getAvailableColors()!=null){
+                List<Color> colors = new ArrayList<>();
+
+                for (Long colorId: addProductDto.getAvailableColors()) {
+                    Color color = colorRepository.findById(colorId).orElseThrow(()-> new ResourceAccessException("Color with ID "+colorId+" Not Found"));
+                    colors.add(color);
+                }
+                Set<Color> colorSet = new HashSet<>(colors);
+//                newProduct.setAvailableColors(colors);
+                newProduct.setAvailableColors(colorSet);
+            }
+
+            if(addProductDto.getSellPrice()!=null)
+                newProduct.setSellPrice((long) (addProductDto.getSellPrice() + (addProductDto.getSellPrice() * 0.15)));
+            if (addProductDto.getAvailableQuantity()!=null)
+                newProduct.setAvailableQuantity(addProductDto.getAvailableQuantity());
+            if (addProductDto.getExpiryDate()!=null)
+                newProduct.setExpiryDate(addProductDto.getExpiryDate());
+            if (addProductDto.getAvailableSizes()!=null){
+                List<Size> availableSizes = new ArrayList<>();
+                for (Long sizeId: addProductDto.getAvailableSizes()) {
+                    Size size = sizeRepository.findById(sizeId).orElseThrow(()-> new ResourceAccessException("Size with ID "+sizeId+" Not Found"));
+                    availableSizes.add(size);
+                }
+                newProduct.setAvailableSizes(availableSizes);
+            }
+            if (addProductDto.getWeight()!=null)
+                newProduct.setWeight(addProductDto.getWeight());
+
+            newProduct.setSellerId(seller.getId());
+            newProduct.setCreatedAt(LocalDate.now());
+            newProduct.setRating(0L);
+
+            return productVariantRepository.save(newProduct);
+
+        }catch (Exception e){
+            throw new ResourceNotFoundException("Seller not Found");
+        }
+
+
+    }
+
+    public List<AllSellerProductsDto> allSellerProductsDto(SearchDto searchDto ,Long sellerId) throws ResourceNotFoundException {
+
+        User user = userRepository.findByIdAndUserTypeAndIsActive(sellerId,"SELLER",true);
+        if (user == null)
+            throw new ResourceNotFoundException("Seller with ID "+sellerId+" Not Found");
+
+        Pageable pageable = PageRequest.of(searchDto.getPageNo(), searchDto.getPageSize());
+
+        return productVariantRepository.allSellerProducts(pageable,sellerId);
+    }
+
 }

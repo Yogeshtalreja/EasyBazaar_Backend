@@ -24,6 +24,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ProductPictureService {
+
     public static final Path uploadDirectory = Paths.get("uploads");
     private final ProductImagesRepository productImagesRepository;
     private final ProductVariantRepository productVariantRepository;

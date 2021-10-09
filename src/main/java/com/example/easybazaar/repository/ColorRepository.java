@@ -1,9 +1,9 @@
 package com.example.easybazaar.repository;
 
-import com.example.easybazaar.model.Company;
+import com.example.easybazaar.model.Color;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CompanyRepository extends JpaRepository<Company, Long> {
+public interface ColorRepository extends JpaRepository<Color,Long> {
 }

@@ -1,10 +1,13 @@
 package com.example.easybazaar.model;
 
 import com.example.easybazaar.enums.WearType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jdk.internal.dynalink.linker.LinkerServices;
 import lombok.*;
 import org.springframework.jca.endpoint.GenericMessageEndpointFactory;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -25,7 +28,15 @@ public class WearSubCategoryAttributes {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "wearType")
-    private WearType wearType;
+    @Column(name = "wear_type")
+    private String wearType;
 
+    @Column(name = "products")
+    @OneToMany(cascade = {CascadeType.ALL},targetEntity = ProductVariant.class)
+    private List<ProductVariant> products;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id",referencedColumnName = "id")
+    @JsonIgnore
+    private Category category;
 }

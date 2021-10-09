@@ -1,10 +1,13 @@
 package com.example.easybazaar.controller;
 
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
+import com.example.easybazaar.dto.AddProductDto;
+import com.example.easybazaar.dto.AllSellerProductsDto;
 import com.example.easybazaar.dto.AllSellersDto;
 import com.example.easybazaar.dto.SellerDto;
 import com.example.easybazaar.dto.search.SearchDto;
 import com.example.easybazaar.exceptions.ResourceNotFoundException;
+import com.example.easybazaar.model.ProductVariant;
 import com.example.easybazaar.model.User;
 import com.example.easybazaar.service.SellerService;
 import lombok.AllArgsConstructor;
@@ -88,6 +91,42 @@ public class SellerController {
             responseModel.setMessage("Seller Response");
             responseModel.setTotalCount(allSellers.size());
             responseModel.setData(allSellers);
+            return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+        } catch (Exception e) {
+            responseModel.setHasError(true);
+            responseModel.setMessage("Error  = " + e.getMessage());
+            responseModel.setTotalCount(0);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
+        }
+
+    }
+    @PostMapping("/addProduct")
+    public ResponseEntity<?> addProduct(@RequestBody AddProductDto addProductDto){
+        CommonResponseModel<ProductVariant> responseModel = new CommonResponseModel<>();
+        try {
+            ProductVariant addedProduct = sellerService.addProduct(addProductDto);
+            responseModel.setHasError(false);
+            responseModel.setMessage("Seller Product Response");
+            responseModel.setTotalCount(1);
+            responseModel.setData(Collections.singletonList(addedProduct));
+            return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+        } catch (Exception e) {
+            responseModel.setHasError(true);
+            responseModel.setMessage("Error  = " + e.getMessage());
+            responseModel.setTotalCount(0);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
+        }
+
+    }
+    @PostMapping("/allProducts/{sellerId}")
+    public ResponseEntity<?> allProducts(@PathVariable ("sellerId") Long sellerId , @RequestBody SearchDto searchDto){
+        CommonResponseModel<AllSellerProductsDto> responseModel = new CommonResponseModel<>();
+        try {
+            List<AllSellerProductsDto> allSellerProducts = sellerService.allSellerProductsDto(searchDto, sellerId);
+            responseModel.setHasError(false);
+            responseModel.setMessage("Seller Product Response");
+            responseModel.setTotalCount(1);
+            responseModel.setData(allSellerProducts);
             return ResponseEntity.status(HttpStatus.OK).body(responseModel);
         } catch (Exception e) {
             responseModel.setHasError(true);
