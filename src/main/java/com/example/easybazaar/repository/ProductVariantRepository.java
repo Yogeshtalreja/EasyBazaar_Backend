@@ -13,7 +13,7 @@ import java.util.List;
 public interface ProductVariantRepository extends JpaRepository<ProductVariant,Long> {
 
 
-    @Query("select new com.example.easybazaar.dto.AllSellerProductsDto(product.name,product.description,product.availableQuantity,product.sellPrice,product.rating,product.createdAt,product.expiryDate,product.weight,product.company) from ProductVariant product where product.sellerId.id = ?1 ")
+    @Query("select new com.example.easybazaar.dto.AllSellerProductsDto(product.name,product.description,product.availableQuantity,product.sellPrice,product.rating,product.createdAt,product.expiryDate,product.weight,product.company) from ProductVariant product where product.sellerId = ?1 ")
     public List<AllSellerProductsDto> allSellerProducts(Pageable pageable , Long sellerId);
 
 }

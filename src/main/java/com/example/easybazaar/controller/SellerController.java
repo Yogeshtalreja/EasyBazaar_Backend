@@ -119,7 +119,7 @@ public class SellerController {
 
     }
     @PostMapping("/allProducts/{sellerId}")
-    public ResponseEntity<?> allProducts(@PathVariable ("sellerId") Long sellerId , @RequestBody SearchDto searchDto){
+    public ResponseEntity<?> allProducts(@PathVariable("sellerId") Long sellerId , @RequestBody SearchDto searchDto){
         CommonResponseModel<AllSellerProductsDto> responseModel = new CommonResponseModel<>();
         try {
             List<AllSellerProductsDto> allSellerProducts = sellerService.allSellerProductsDto(searchDto, sellerId);
