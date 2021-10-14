@@ -1,10 +1,7 @@
 package com.example.easybazaar.controller;
 
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
-import com.example.easybazaar.dto.AddProductDto;
-import com.example.easybazaar.dto.AllSellerProductsDto;
-import com.example.easybazaar.dto.AllSellersDto;
-import com.example.easybazaar.dto.SellerDto;
+import com.example.easybazaar.dto.*;
 import com.example.easybazaar.dto.search.SearchDto;
 import com.example.easybazaar.exceptions.ResourceNotFoundException;
 import com.example.easybazaar.model.ProductVariant;
@@ -137,5 +134,23 @@ public class SellerController {
 
     }
 
+    @PostMapping("/signUp}")
+    public ResponseEntity<?> signUpSeller(@RequestBody SignUpDto signUpDto){
+        CommonResponseModel<SignUpDto> responseModel = new CommonResponseModel<>();
+        try {
+            SignUpDto resultSignUpDto = sellerService.singUpSeller(signUpDto);
+            responseModel.setHasError(false);
+            responseModel.setMessage("Seller SignUp Successful");
+            responseModel.setTotalCount(1);
+            responseModel.setData(Collections.singletonList(resultSignUpDto));
+            return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+        } catch (Exception e) {
+            responseModel.setHasError(true);
+            responseModel.setMessage("Error  = " + e.getMessage());
+            responseModel.setTotalCount(0);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
+        }
+
+    }
 
 }

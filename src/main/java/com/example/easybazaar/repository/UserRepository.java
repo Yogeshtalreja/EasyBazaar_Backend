@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     public List<AllCustomersDto> allCustomers(Pageable pageable);
 
     public User findByIdAndUserTypeAndIsActive(Long id, String userType,Boolean isActive);
+
+    public User findByEmail(String email);
+
 }

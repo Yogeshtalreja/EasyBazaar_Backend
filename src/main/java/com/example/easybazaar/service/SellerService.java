@@ -1,10 +1,8 @@
 package com.example.easybazaar.service;
 
-import com.example.easybazaar.dto.AddProductDto;
-import com.example.easybazaar.dto.AllSellerProductsDto;
-import com.example.easybazaar.dto.AllSellersDto;
-import com.example.easybazaar.dto.SellerDto;
+import com.example.easybazaar.dto.*;
 import com.example.easybazaar.dto.search.SearchDto;
+import com.example.easybazaar.encryption.AES;
 import com.example.easybazaar.enums.UserType;
 import com.example.easybazaar.exceptions.ResourceNotFoundException;
 import com.example.easybazaar.model.*;
@@ -17,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
 
+import javax.jws.soap.SOAPBinding;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -181,5 +180,29 @@ public class SellerService {
 
         return productVariantRepository.allSellerProducts(pageable,sellerId);
     }
+
+
+    public SignUpDto singUpSeller(SignUpDto signUp) throws ResourceNotFoundException {
+
+        User user = userRepository.findByEmail(signUp.getEmail());
+
+        if (signUp.getName()==null || signUp.getPassword()==null || signUp.getEmail()==null)
+            throw new ResourceNotFoundException("Enter All Details");
+
+        if (user!=null)
+            throw new ResourceNotFoundException("User With This Email is Already Exists");
+
+        User newUser = new User();
+        newUser.setName(signUp.getName());
+        newUser.setEmail(signUp.getEmail());
+        String encryptedPassword = AES.encrypt(signUp.getPassword(),"EASYBAZ");
+        newUser.setPassword(encryptedPassword);
+        newUser.setUserType(UserType.SELLER.toString());
+        userRepository.save(newUser);
+        signUp.setPassword(encryptedPassword);
+
+        return signUp;
+    }
+
 
 }
