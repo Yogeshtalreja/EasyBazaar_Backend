@@ -111,27 +111,25 @@ public class SellerService {
     }
 
 
-    public ProductVariant addProduct(AddProductDto addProductDto) throws ResourceNotFoundException{
+    public ProductVariant addProduct(CreateProductDto createProductDto) throws ResourceNotFoundException{
 
-        if (addProductDto.getSellerId()==null)
+        if (createProductDto.getSellerId()==null)
             throw new ResourceNotFoundException("Seller Id is Must");
         try{
-            User seller = userRepository.findByIdAndUserTypeAndIsActive(addProductDto.getSellerId(), "SELLER",true );
+            User seller = userRepository.findByIdAndUserTypeAndIsActive(createProductDto.getSellerId(), "SELLER",true );
             if (seller == null)
                 throw new ResourceNotFoundException("Seller Not Found");
 
             ProductVariant newProduct = new ProductVariant();
 
-            if(addProductDto.getName()!=null)
-                newProduct.setName(addProductDto.getName());
-            if(addProductDto.getCompany()!=null)
-                newProduct.setCompany(addProductDto.getCompany());
-            if(addProductDto.getDescription()!=null)
-                newProduct.setDescription(newProduct.getDescription());
-            if(addProductDto.getAvailableColors()!=null){
+            if(createProductDto.getName()!=null)
+                newProduct.setName(createProductDto.getName());
+            if(createProductDto.getDescription()!=null)
+                newProduct.setDescription(createProductDto.getDescription());
+            if(createProductDto.getAvailableColors()!=null){
                 List<Color> colors = new ArrayList<>();
 
-                for (Long colorId: addProductDto.getAvailableColors()) {
+                for (Long colorId: createProductDto.getAvailableColors()) {
                     Color color = colorRepository.findById(colorId).orElseThrow(()-> new ResourceAccessException("Color with ID "+colorId+" Not Found"));
                     colors.add(color);
                 }
@@ -140,22 +138,20 @@ public class SellerService {
                 newProduct.setAvailableColors(colorSet);
             }
 
-            if(addProductDto.getSellPrice()!=null)
-                newProduct.setSellPrice((long) (addProductDto.getSellPrice() + (addProductDto.getSellPrice() * 0.15)));
-            if (addProductDto.getAvailableQuantity()!=null)
-                newProduct.setAvailableQuantity(addProductDto.getAvailableQuantity());
-            if (addProductDto.getExpiryDate()!=null)
-                newProduct.setExpiryDate(addProductDto.getExpiryDate());
-            if (addProductDto.getAvailableSizes()!=null){
-                List<Size> availableSizes = new ArrayList<>();
-                for (Long sizeId: addProductDto.getAvailableSizes()) {
-                    Size size = sizeRepository.findById(sizeId).orElseThrow(()-> new ResourceAccessException("Size with ID "+sizeId+" Not Found"));
-                    availableSizes.add(size);
-                }
-                newProduct.setAvailableSizes(availableSizes);
-            }
-            if (addProductDto.getWeight()!=null)
-                newProduct.setWeight(addProductDto.getWeight());
+            if(createProductDto.getRegularPrice()!=null)
+                newProduct.setSellPrice((long) (createProductDto.getRegularPrice() + (createProductDto.getRegularPrice() * 0.15)));
+            if (createProductDto.getAvailableQuantity()!=null)
+                newProduct.setAvailableQuantity(createProductDto.getAvailableQuantity());
+//            if (addProductDto.getAvailableSizes()!=null){
+//                List<Size> availableSizes = new ArrayList<>();
+//                for (Long sizeId: addProductDto.getAvailableSizes()) {
+//                    Size size = sizeRepository.findById(sizeId).orElseThrow(()-> new ResourceAccessException("Size with ID "+sizeId+" Not Found"));
+//                    availableSizes.add(size);
+//                }
+//                newProduct.setAvailableSizes(availableSizes);
+//            }
+//            if (addProductDto.getWeight()!=null)
+//                newProduct.setWeight(addProductDto.getWeight());
 
             newProduct.setSellerId(seller.getId());
             newProduct.setCreatedAt(LocalDate.now());
@@ -204,5 +200,28 @@ public class SellerService {
         return signUp;
     }
 
+    public ProductVariant editProduct(CreateProductDto createProductDto) throws ResourceNotFoundException {
 
+        if (createProductDto.getProductId()==null)
+            throw new ResourceNotFoundException(" Product ID is Missing");
+        if (createProductDto.getSellerId()==null)
+            throw new ResourceNotFoundException("Seller Id is Missing");
+        ProductVariant existingProduct = productVariantRepository.findByIdAndSellerId(createProductDto.getProductId(), createProductDto.getSellerId());
+        if (existingProduct==null)
+            throw new ResourceNotFoundException("Not Find Product");
+
+        if (createProductDto.getRegularPrice()!=null)
+            existingProduct.setSellPrice((long) (createProductDto.getRegularPrice() + (createProductDto.getRegularPrice()) * 0.15));
+
+        if (createProductDto.getName()!=null)
+            existingProduct.setName(createProductDto.getName());
+
+        if(createProductDto.getDescription()!=null)
+            existingProduct.setDescription(createProductDto.getDescription());
+
+        if (createProductDto.getAvailableQuantity()!=null)
+            existingProduct.setAvailableQuantity(createProductDto.getAvailableQuantity());
+
+        return productVariantRepository.save(existingProduct);
+    }
 }

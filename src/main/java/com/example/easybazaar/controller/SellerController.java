@@ -3,7 +3,7 @@ package com.example.easybazaar.controller;
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
 import com.example.easybazaar.dto.*;
 import com.example.easybazaar.dto.search.SearchDto;
-import com.example.easybazaar.exceptions.ResourceNotFoundException;
+
 import com.example.easybazaar.model.ProductVariant;
 import com.example.easybazaar.model.User;
 import com.example.easybazaar.service.SellerService;
@@ -98,7 +98,7 @@ public class SellerController {
 
     }
     @PostMapping("/addProduct")
-    public ResponseEntity<?> addProduct(@RequestBody AddProductDto addProductDto){
+    public ResponseEntity<?> addProduct(@RequestBody CreateProductDto addProductDto){
         CommonResponseModel<ProductVariant> responseModel = new CommonResponseModel<>();
         try {
             ProductVariant addedProduct = sellerService.addProduct(addProductDto);
@@ -151,6 +151,25 @@ public class SellerController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
         }
 
+    }
+
+    @PostMapping("/updateProduct")
+    public ResponseEntity<?> updateProduct(@RequestBody CreateProductDto createProductDto){
+        CommonResponseModel<ProductVariant> responseModel = new CommonResponseModel<>();
+        try{
+            ProductVariant addedProduct = sellerService.editProduct(createProductDto);
+            responseModel.setHasError(false);
+            responseModel.setMessage("Product Edit Successfully");
+            responseModel.setTotalCount(1);
+            responseModel.setData(Collections.singletonList(addedProduct));
+            return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+
+        }catch (Exception e){
+            responseModel.setHasError(true);
+            responseModel.setMessage("Error  = " + e.getMessage());
+            responseModel.setTotalCount(0);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
+        }
     }
 
 }
