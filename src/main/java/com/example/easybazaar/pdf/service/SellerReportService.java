@@ -9,7 +9,6 @@ import com.lowagie.text.Font;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import lombok.AllArgsConstructor;
-import org.apache.el.stream.Stream;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -60,9 +59,11 @@ public class SellerReportService {
         headerParagraphThree.setAlignment(Element.ALIGN_LEFT);
         document.add(headerParagraphThree);
 
+        Paragraph lineBreakPara = new Paragraph("");
+        document.add(lineBreakPara);
         List<ProductVariant> sellerProducts = productVariantRepository.findBySellerId(sellerId);
 
-        float[] columnWidth = {200f,200f,200f,200f};
+   //     float[] columnWidth = {200f,200f,200f,200f};
 
         PdfPTable table = new PdfPTable(4);
 

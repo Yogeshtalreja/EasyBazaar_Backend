@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class SellerDto {
+public class  SellerDto {
     private Long id;
     private String name;
     private String companyName;

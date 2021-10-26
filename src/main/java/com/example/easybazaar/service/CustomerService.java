@@ -50,7 +50,8 @@ public class CustomerService {
         if (customerDto.getId()==null)
             throw new ResourceNotFoundException("ID is Mandatory");
 
-        User user = userRepository.findById(customerDto.getId()).orElseThrow(()-> new ResourceNotFoundException("Customer With ID not Found"));
+        User user = userRepository.findById(customerDto.getId()).orElseThrow(()
+                -> new ResourceNotFoundException("Customer With ID not Found"));
 
         addCustomerInformation(customerDto, user);
         user.setUserType(CUSTOMER.toString());

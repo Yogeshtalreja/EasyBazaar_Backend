@@ -55,9 +55,11 @@ public class ProductPictureService {
             productImages.setName(file.getOriginalFilename());
             ProductImages saved = productImagesRepository.save(productImages);
             String imageName = UUID.randomUUID().toString();
-            Files.copy(file.getInputStream(), uploadDirectory.resolve(saved.getId() + "-" + imageName+"."+file.getContentType().substring(6)));
+            Files.copy(file.getInputStream(), uploadDirectory.resolve(saved.getId() + "-" + imageName+"."+file.getContentType()
+                    .substring(6)));
             String url = MvcUriComponentsBuilder
-                    .fromMethodName(ProductPicturesController.class, "getFile", saved.getId() + "-" + imageName+"."+file.getContentType().substring(6)).build().toString();
+                    .fromMethodName(ProductPicturesController.class, "getFile", saved.getId() + "-" +
+                            imageName+"."+file.getContentType().substring(6)).build().toString();
             saved.setUrl(url);
             saved.setPath(uploadDirectory + "/" + saved.getId() + "-" + imageName+"."+file.getContentType().substring(6));
             productImagesRepository.save(saved);

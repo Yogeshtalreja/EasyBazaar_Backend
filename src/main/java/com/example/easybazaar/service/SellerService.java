@@ -37,11 +37,7 @@ public class SellerService {
         if (!ValidationUtility.isValidNIC(sellerDto.getCnic()))
             throw new ResourceNotFoundException("CNIC is Not Valid");
 
-//        if (ValidationUtility.isValidMobileNumber(sellerDto.getContactNumber()))
-//            throw new ResourceNotFoundException("Contact Number is Not in Format");
-
         User user = new User();
-
         addSellerInformation(sellerDto, user);
         user.setUserType(UserType.SELLER.toString());
         user.setIsActive(true);
@@ -51,7 +47,8 @@ public class SellerService {
 
     public User updateSellerInfo(SellerDto sellerDto) throws ResourceNotFoundException {
 
-        User user = userRepository.findById(sellerDto.getId()).orElseThrow(()-> new ResourceNotFoundException("User with ID "+sellerDto.getId()+" Not Found"));
+        User user = userRepository.findById(sellerDto.getId()).orElseThrow(()->
+                new ResourceNotFoundException("User with ID "+sellerDto.getId()+" Not Found"));
 
         addSellerInformation(sellerDto, user);
         user.setIsActive(true);
@@ -78,7 +75,7 @@ public class SellerService {
         if (sellerDto.getContactNumber()!=null)
             user.setContactNumber(sellerDto.getContactNumber());
         if (sellerDto.getPassword()!=null)
-            user.setPassword(sellerDto.getPassword());
+            user.setPassword(AES.encrypt(sellerDto.getPassword(),"EASYBAZ"));
         if (sellerDto.getRegistrationDate()!=null)
             user.setRegistrationDate(sellerDto.getRegistrationDate());
         if (sellerDto.getCityId()!=null){
@@ -130,28 +127,18 @@ public class SellerService {
                 List<Color> colors = new ArrayList<>();
 
                 for (Long colorId: createProductDto.getAvailableColors()) {
-                    Color color = colorRepository.findById(colorId).orElseThrow(()-> new ResourceAccessException("Color with ID "+colorId+" Not Found"));
+                    Color color = colorRepository.findById(colorId).orElseThrow(()->
+                            new ResourceAccessException("Color with ID "+colorId+" Not Found"));
                     colors.add(color);
                 }
                 Set<Color> colorSet = new HashSet<>(colors);
 //                newProduct.setAvailableColors(colors);
                 newProduct.setAvailableColors(colorSet);
             }
-
             if(createProductDto.getRegularPrice()!=null)
                 newProduct.setSellPrice((long) (createProductDto.getRegularPrice() + (createProductDto.getRegularPrice() * 0.15)));
             if (createProductDto.getAvailableQuantity()!=null)
                 newProduct.setAvailableQuantity(createProductDto.getAvailableQuantity());
-//            if (addProductDto.getAvailableSizes()!=null){
-//                List<Size> availableSizes = new ArrayList<>();
-//                for (Long sizeId: addProductDto.getAvailableSizes()) {
-//                    Size size = sizeRepository.findById(sizeId).orElseThrow(()-> new ResourceAccessException("Size with ID "+sizeId+" Not Found"));
-//                    availableSizes.add(size);
-//                }
-//                newProduct.setAvailableSizes(availableSizes);
-//            }
-//            if (addProductDto.getWeight()!=null)
-//                newProduct.setWeight(addProductDto.getWeight());
 
             newProduct.setSellerId(seller.getId());
             newProduct.setCreatedAt(LocalDate.now());
@@ -206,12 +193,14 @@ public class SellerService {
             throw new ResourceNotFoundException(" Product ID is Missing");
         if (createProductDto.getSellerId()==null)
             throw new ResourceNotFoundException("Seller Id is Missing");
-        ProductVariant existingProduct = productVariantRepository.findByIdAndSellerId(createProductDto.getProductId(), createProductDto.getSellerId());
+        ProductVariant existingProduct = productVariantRepository.findByIdAndSellerId(createProductDto.getProductId(),
+                createProductDto.getSellerId());
         if (existingProduct==null)
             throw new ResourceNotFoundException("Not Find Product");
 
         if (createProductDto.getRegularPrice()!=null)
-            existingProduct.setSellPrice((long) (createProductDto.getRegularPrice() + (createProductDto.getRegularPrice()) * 0.15));
+            existingProduct.setSellPrice((long) (createProductDto.getRegularPrice() +
+                    (createProductDto.getRegularPrice()) * 0.15));
 
         if (createProductDto.getName()!=null)
             existingProduct.setName(createProductDto.getName());
