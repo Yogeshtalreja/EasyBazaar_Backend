@@ -1,8 +1,10 @@
 package com.example.easybazaar.pdf.service;
 
 import com.example.easybazaar.exceptions.ResourceNotFoundException;
+import com.example.easybazaar.model.OrderDetails;
 import com.example.easybazaar.model.ProductVariant;
 import com.example.easybazaar.model.User;
+import com.example.easybazaar.repository.OrderDetailsRepository;
 import com.example.easybazaar.repository.ProductVariantRepository;
 import com.example.easybazaar.repository.UserRepository;
 import com.lowagie.text.Font;
@@ -26,6 +28,7 @@ public class SellerReportService {
 
     private final UserRepository userRepository;
     private final ProductVariantRepository productVariantRepository;
+    private final OrderDetailsRepository orderDetailsRepository;
 
     public void sellerProductsReport(HttpServletResponse response , Long sellerId) throws ResourceNotFoundException, IOException {
 
@@ -65,18 +68,45 @@ public class SellerReportService {
 
    //     float[] columnWidth = {200f,200f,200f,200f};
 
-        PdfPTable table = new PdfPTable(4);
+        PdfPTable table = new PdfPTable(5);
+
+        PdfPCell pdfHeaderOne = new PdfPCell(new Paragraph("Product Name"));
+        PdfPCell pdfHeaderTwo = new PdfPCell(new Paragraph("Product Rating"));
+        PdfPCell pdfHeaderThree = new PdfPCell(new Paragraph("Available Quantities"));
+        PdfPCell pdfHeaderFour = new PdfPCell(new Paragraph("Sell Products No "));
+        PdfPCell pdfHeaderFive = new PdfPCell(new Paragraph("Sell Amount"));
+
+        table.addCell(pdfHeaderOne);
+        table.addCell(pdfHeaderTwo);
+        table.addCell(pdfHeaderThree);
+        table.addCell(pdfHeaderFour);
+        table.addCell(pdfHeaderFive);
+
 
         for (ProductVariant product:sellerProducts) {
             PdfPCell pdfCol1 = new PdfPCell(new Paragraph(product.getName()));
-            PdfPCell pdfCol2 = new PdfPCell(new Paragraph(product.getRating()));
-            PdfPCell pdfCol3 = new PdfPCell(new Paragraph(product.getAvailableQuantity()));
-            PdfPCell pdfCol4 = new PdfPCell(new Paragraph((float) (product.getAvailableQuantity() - (product.getAvailableQuantity()*0.15))));
+            PdfPCell pdfCol2 = new PdfPCell(new Paragraph(""+product.getRating()));
+            PdfPCell pdfCol3 = new PdfPCell(new Paragraph(""+product.getAvailableQuantity()));
 
+            List<OrderDetails> orderDetails = orderDetailsRepository.findByProduct(product);
+            Integer totalSelledProducts = 0;
+            for (OrderDetails orderDetailss:orderDetails) {
+                totalSelledProducts+= orderDetailss.getQuantity();
+            }
+
+           // Double sellAmount = (product.getSellPrice() - ((product.getSellPrice() * 0.15) - ((product.getSellPrice() * 0.15)* 0.15)));
+
+            PdfPCell pdfCol4 = new PdfPCell(new Paragraph(""+ ((product.getSellPrice()/1.15)*totalSelledProducts) +" PKR ") );
+
+
+            //            PdfPCell pdfPCell5 =
+            PdfPCell pdfCol5 = new PdfPCell(new Paragraph(""+totalSelledProducts));
             table.addCell(pdfCol1);
             table.addCell(pdfCol2);
             table.addCell(pdfCol3);
+            table.addCell(pdfCol5);
             table.addCell(pdfCol4);
+
         }
 
         document.add(table);

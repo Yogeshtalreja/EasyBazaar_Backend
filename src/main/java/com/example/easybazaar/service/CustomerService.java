@@ -3,7 +3,7 @@ package com.example.easybazaar.service;
 import com.example.easybazaar.dto.AllCustomersDto;
 import com.example.easybazaar.dto.CustomerDto;
 import com.example.easybazaar.dto.search.SearchDto;
-import com.example.easybazaar.enums.GenderEnum;
+import com.example.easybazaar.encryption.AES;
 import com.example.easybazaar.exceptions.ResourceNotFoundException;
 import com.example.easybazaar.model.City;
 import com.example.easybazaar.model.User;
@@ -16,10 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
-import static com.example.easybazaar.enums.GenderEnum.FEMALE;
-import static com.example.easybazaar.enums.GenderEnum.MALE;
 import static com.example.easybazaar.enums.UserType.CUSTOMER;
 
 @Service
@@ -33,8 +32,15 @@ public class CustomerService {
 
         if (customerDto.getEmail()==null)
             throw new ResourceNotFoundException("Email is Mandatory");
+
+        if (customerDto.getCnic()==null)
+            throw new ResourceNotFoundException("NIC is Mandatory");
+
+        if (customerDto.getPassword()==null)
+            throw new ResourceNotFoundException("Password is Mandatory");
+
         if (!ValidationUtility.isValidNIC(customerDto.getCnic()))
-            throw new ResourceNotFoundException("CNIC is Not Valid");
+            throw new ResourceNotFoundException("NIC is Not Valid");
 
         User user = new User();
         addCustomerInformation(customerDto, user);
@@ -90,9 +96,10 @@ public class CustomerService {
         if (customerDto.getContactNumber()!=null)
             user.setContactNumber(customerDto.getContactNumber());
         if (customerDto.getPassword()!=null)
-            user.setPassword(customerDto.getPassword());
-        if (customerDto.getRegistrationDate()!=null)
-            user.setRegistrationDate(customerDto.getRegistrationDate());
+            user.setPassword(AES.encrypt(customerDto.getPassword(),"EASYBAZ"));
+
+        user.setRegistrationDate(LocalDate.now());
+
         if (customerDto.getDob()!=null)
             user.setDob(customerDto.getDob());
 

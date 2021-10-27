@@ -134,7 +134,7 @@ public class SellerController {
 
     }
 
-    @PostMapping("/signUp}")
+    @PostMapping("/signUp")
     public ResponseEntity<?> signUpSeller(@RequestBody SignUpDto signUpDto){
         CommonResponseModel<SignUpDto> responseModel = new CommonResponseModel<>();
         try {

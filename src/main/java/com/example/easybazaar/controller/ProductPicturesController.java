@@ -34,7 +34,7 @@ public class ProductPicturesController {
         }
     }
 
-    @PostMapping("/uploadPropertyImage/{productId}")
+    @PostMapping("/ /{productId}")
     public ResponseEntity<?> uploadPropertyDocOrImages(@PathVariable("productId") Long productId, @RequestParam("file") MultipartFile[] file) throws Exception {
         CommonResponseModel<String> responseModel = new CommonResponseModel<>();
         try {

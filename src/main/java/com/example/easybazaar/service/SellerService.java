@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
 
-import javax.jws.soap.SOAPBinding;
+
 import java.time.LocalDate;
 import java.util.*;
 
@@ -34,8 +34,14 @@ public class SellerService {
         if(sellerDto.getEmail()==null)
             throw new ResourceNotFoundException("Email is Mandatory");
 
+        if (sellerDto.getCnic()==null)
+            throw new ResourceNotFoundException("NIC is Mandatory");
+
+        if (sellerDto.getPassword()==null)
+            throw new ResourceNotFoundException("Password is Mandatory");
+
         if (!ValidationUtility.isValidNIC(sellerDto.getCnic()))
-            throw new ResourceNotFoundException("CNIC is Not Valid");
+            throw new ResourceNotFoundException("NIC is Not Valid");
 
         User user = new User();
         addSellerInformation(sellerDto, user);
