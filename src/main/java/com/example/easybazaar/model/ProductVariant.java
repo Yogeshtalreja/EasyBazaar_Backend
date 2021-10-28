@@ -1,12 +1,10 @@
 package com.example.easybazaar.model;
 
-import com.example.easybazaar.enums.ColorEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import java.util.Set;
 
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;

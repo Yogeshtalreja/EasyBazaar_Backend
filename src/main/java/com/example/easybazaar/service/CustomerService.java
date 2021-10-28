@@ -2,8 +2,10 @@ package com.example.easybazaar.service;
 
 import com.example.easybazaar.dto.AllCustomersDto;
 import com.example.easybazaar.dto.CustomerDto;
+import com.example.easybazaar.dto.SignUpDto;
 import com.example.easybazaar.dto.search.SearchDto;
 import com.example.easybazaar.encryption.AES;
+import com.example.easybazaar.enums.UserType;
 import com.example.easybazaar.exceptions.ResourceNotFoundException;
 import com.example.easybazaar.model.City;
 import com.example.easybazaar.model.User;
@@ -120,6 +122,28 @@ public class CustomerService {
             user.setCity(city);
         }
 
+    }
+
+    public SignUpDto signUpCustomer(SignUpDto signUp) throws ResourceNotFoundException {
+
+        User user = userRepository.findByEmail(signUp.getEmail());
+
+        if (signUp.getFirstName()==null || signUp.getPassword()==null || signUp.getEmail()==null || signUp.getLastName()==null )
+            throw new ResourceNotFoundException("Enter All Details");
+
+        if (user!=null)
+            throw new ResourceNotFoundException("User With This Email is Already Exists");
+
+        User newUser = new User();
+        newUser.setName(signUp.getFirstName()+" "+signUp.getLastName());
+        newUser.setEmail(signUp.getEmail());
+        String encryptedPassword = AES.encrypt(signUp.getPassword(),"EASYBAZ");
+        newUser.setPassword(encryptedPassword);
+        newUser.setUserType(CUSTOMER.toString());
+        userRepository.save(newUser);
+        signUp.setPassword(encryptedPassword);
+
+        return signUp;
     }
 
     public List<AllCustomersDto> allCustomers(SearchDto searchDto){

@@ -20,6 +20,7 @@ import com.lowagie.text.pdf.PdfWriter;
 
 import java.awt.*;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Service
@@ -94,9 +95,12 @@ public class SellerReportService {
                 totalSelledProducts+= orderDetailss.getQuantity();
             }
 
+            Double sellAmount = (product.getSellPrice() / 1.15) * totalSelledProducts;
+            DecimalFormat format = new DecimalFormat("0.#");
+
            // Double sellAmount = (product.getSellPrice() - ((product.getSellPrice() * 0.15) - ((product.getSellPrice() * 0.15)* 0.15)));
 
-            PdfPCell pdfCol4 = new PdfPCell(new Paragraph(""+ ((product.getSellPrice()/1.15)*totalSelledProducts) +" PKR ") );
+            PdfPCell pdfCol4 = new PdfPCell(new Paragraph(""+ format.format(sellAmount) +" PKR ") );
 
 
             //            PdfPCell pdfPCell5 =

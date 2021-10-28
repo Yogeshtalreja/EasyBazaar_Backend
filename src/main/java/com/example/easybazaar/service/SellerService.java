@@ -175,14 +175,14 @@ public class SellerService {
 
         User user = userRepository.findByEmail(signUp.getEmail());
 
-        if (signUp.getName()==null || signUp.getPassword()==null || signUp.getEmail()==null)
+        if (signUp.getFirstName()==null || signUp.getPassword()==null || signUp.getEmail()==null || signUp.getLastName()==null )
             throw new ResourceNotFoundException("Enter All Details");
 
         if (user!=null)
             throw new ResourceNotFoundException("User With This Email is Already Exists");
 
         User newUser = new User();
-        newUser.setName(signUp.getName());
+        newUser.setName(signUp.getFirstName()+" "+signUp.getLastName());
         newUser.setEmail(signUp.getEmail());
         String encryptedPassword = AES.encrypt(signUp.getPassword(),"EASYBAZ");
         newUser.setPassword(encryptedPassword);

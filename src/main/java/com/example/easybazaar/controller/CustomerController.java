@@ -3,6 +3,7 @@ package com.example.easybazaar.controller;
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
 import com.example.easybazaar.dto.AllCustomersDto;
 import com.example.easybazaar.dto.CustomerDto;
+import com.example.easybazaar.dto.SignUpDto;
 import com.example.easybazaar.dto.search.SearchDto;
 import com.example.easybazaar.model.User;
 import com.example.easybazaar.service.CustomerService;
@@ -34,6 +35,25 @@ public class CustomerController {
         }catch (Exception e){
             responseModel.setHasError(true);
             responseModel.setMessage(e.getMessage());
+            responseModel.setTotalCount(0);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
+        }
+
+    }
+
+    @PostMapping("/signUp")
+    public ResponseEntity<?> signUpSeller(@RequestBody SignUpDto signUpDto){
+        CommonResponseModel<SignUpDto> responseModel = new CommonResponseModel<>();
+        try {
+            SignUpDto resultSignUpDto = customerService.signUpCustomer(signUpDto);
+            responseModel.setHasError(false);
+            responseModel.setMessage("Customer SignUp Successful");
+            responseModel.setTotalCount(1);
+            responseModel.setData(Collections.singletonList(resultSignUpDto));
+            return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+        } catch (Exception e) {
+            responseModel.setHasError(true);
+            responseModel.setMessage("Error  = " + e.getMessage());
             responseModel.setTotalCount(0);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
         }
