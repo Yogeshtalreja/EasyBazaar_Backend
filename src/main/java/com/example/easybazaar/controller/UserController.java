@@ -2,6 +2,7 @@ package com.example.easybazaar.controller;
 
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
 import com.example.easybazaar.dto.SignInRequest;
+import com.example.easybazaar.dto.SignInRes;
 import com.example.easybazaar.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,9 +25,9 @@ public class UserController {
     @PostMapping("/signIn")
     public ResponseEntity<?> isAuthenticated(@RequestBody SignInRequest signInRequest){
 
-        CommonResponseModel<Boolean> commonResponseModel = new CommonResponseModel<>();
+        CommonResponseModel<SignInRes> commonResponseModel = new CommonResponseModel<>();
         try{
-            Boolean isValid = userService.isValidAuthentication(signInRequest);
+            SignInRes isValid = userService.isValidAuthentication(signInRequest);
             commonResponseModel.setTotalCount(1);
             commonResponseModel.setMessage("Valid Credentials");
             commonResponseModel.setHasError(false);

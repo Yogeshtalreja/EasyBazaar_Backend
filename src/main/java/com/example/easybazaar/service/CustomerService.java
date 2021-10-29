@@ -5,7 +5,6 @@ import com.example.easybazaar.dto.CustomerDto;
 import com.example.easybazaar.dto.SignUpDto;
 import com.example.easybazaar.dto.search.SearchDto;
 import com.example.easybazaar.encryption.AES;
-import com.example.easybazaar.enums.UserType;
 import com.example.easybazaar.exceptions.ResourceNotFoundException;
 import com.example.easybazaar.model.City;
 import com.example.easybazaar.model.User;

@@ -1,6 +1,7 @@
 package com.example.easybazaar.service;
 
 import com.example.easybazaar.dto.SignInRequest;
+import com.example.easybazaar.dto.SignInRes;
 import com.example.easybazaar.encryption.AES;
 import com.example.easybazaar.exceptions.ResourceNotFoundException;
 import com.example.easybazaar.model.User;
@@ -18,7 +19,7 @@ public class UserService {
 //    @Value("${aes.secrete}")
 //    private String aesKey;
 
-    public Boolean isValidAuthentication(SignInRequest signInRequest) throws ResourceNotFoundException {
+    public SignInRes isValidAuthentication(SignInRequest signInRequest) throws ResourceNotFoundException {
 
         if (signInRequest.getEmail()==null || signInRequest.getPassword()==null){
             throw new ResourceNotFoundException("Email or Password can not be Null");
@@ -29,7 +30,7 @@ public class UserService {
             if (user == null)
                 throw new ResourceNotFoundException("Email or Password is Incorrect");
             else
-                return true;
+                return new SignInRes(true,user.getId());
         }
 
     }
