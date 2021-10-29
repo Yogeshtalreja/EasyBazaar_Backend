@@ -14,9 +14,9 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant,L
 
 
     @Query("select new com.example.easybazaar.dto.AllSellerProductsDto(product.name,product.description,product.availableQuantity,product.sellPrice,product.rating,product.createdAt,product.expiryDate,product.weight,product.company) from ProductVariant product where product.sellerId = ?1 ")
-    public List<AllSellerProductsDto> allSellerProducts(Pageable pageable , Long sellerId);
+     List<AllSellerProductsDto> allSellerProducts(Pageable pageable , Long sellerId);
 
-    public ProductVariant findByIdAndSellerId(Long id, Long sellerId);
+     ProductVariant findByIdAndSellerId(Long id, Long sellerId);
 
-    public List<ProductVariant> findBySellerId(Long sellerId);
+     List<ProductVariant> findBySellerId(Long sellerId);
 }

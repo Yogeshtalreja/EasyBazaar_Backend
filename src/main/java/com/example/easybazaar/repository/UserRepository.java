@@ -28,5 +28,12 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
      User findByEmailAndPasswordAndAndIsActive(String email, String password, Boolean isActive);
 
+     @Query("SELECT count(user) from User user where user.userType='SELLER' and user.isActive = true ")
+     Integer totalSellers();
 
+    @Query("SELECT count(user) from User user where user.userType='CUSTOMER' and user.isActive = true ")
+    Integer totalCustomers();
+
+    @Query("SELECT count(user) from User user where user.userType='SHIPPER' and user.isActive = true ")
+    Integer totalShippers();
 }
