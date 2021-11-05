@@ -43,6 +43,12 @@ public class CustomerService {
         if (!ValidationUtility.isValidNIC(customerDto.getCnic()))
             throw new ResourceNotFoundException("NIC is Not Valid");
 
+        if (userRepository.findByEmail(customerDto.getEmail())!=null)
+            throw new ResourceNotFoundException("Email Already Exists");
+        if(userRepository.findByCnic(customerDto.getCnic())!=null)
+            throw new ResourceNotFoundException("CNIC is already Exists");
+
+
         User user = new User();
         addCustomerInformation(customerDto, user);
         user.setUserType(CUSTOMER.toString());

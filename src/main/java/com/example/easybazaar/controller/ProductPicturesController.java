@@ -1,6 +1,8 @@
 package com.example.easybazaar.controller;
 
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
+import com.example.easybazaar.exceptions.ResourceNotFoundException;
+import com.example.easybazaar.model.ProductImages;
 import com.example.easybazaar.service.ProductPictureService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +64,13 @@ public class ProductPicturesController {
 
         }
 
+    }
+
+
+    @GetMapping("/delete/{productId}")
+    public List<ProductImages> deleteImages(@PathVariable("productId") long productId) throws ResourceNotFoundException {
+
+        return productPictureService.deletePictures(productId);
     }
 
 }

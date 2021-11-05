@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -67,6 +68,20 @@ public class ProductPictureService {
 
           //  throw new Exception("Could not store the file. Error: " + e.getMessage() + "\n" + e);
 
+    }
+
+
+    public List<ProductImages> deletePictures(Long productId) throws ResourceNotFoundException {
+
+        ProductVariant product =productVariantRepository.findById(productId).orElseThrow(()->
+                new ResourceNotFoundException("Not Found"));
+
+        List<ProductImages> productImages = productImagesRepository.findByProduct(product);
+        for (ProductImages productImages1:productImages) {
+            productImagesRepository.delete(productImages1);
+        }
+
+        return productImages;
     }
 
 }

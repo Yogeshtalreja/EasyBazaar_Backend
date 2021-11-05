@@ -31,6 +31,9 @@ public class SellerService {
     public User addSeller(SellerDto sellerDto) throws ResourceNotFoundException {
 
 
+
+
+
         if(sellerDto.getEmail()==null)
             throw new ResourceNotFoundException("Email is Mandatory");
 
@@ -42,6 +45,11 @@ public class SellerService {
 
         if (!ValidationUtility.isValidNIC(sellerDto.getCnic()))
             throw new ResourceNotFoundException("NIC is Not Valid");
+
+        if (userRepository.findByEmail(sellerDto.getEmail())!=null)
+            throw new ResourceNotFoundException("Email Already Exists");
+        if(userRepository.findByCnic(sellerDto.getCnic())!=null)
+            throw new ResourceNotFoundException("CNIC is already Exists");
 
         User user = new User();
         addSellerInformation(sellerDto, user);
@@ -129,6 +137,9 @@ public class SellerService {
                 newProduct.setName(createProductDto.getName());
             if(createProductDto.getDescription()!=null)
                 newProduct.setDescription(createProductDto.getDescription());
+            if (createProductDto.getExpiryDate()!=null)
+                newProduct.setExpiryDate(createProductDto.getExpiryDate());
+
             if(createProductDto.getAvailableColors()!=null){
                 List<Color> colors = new ArrayList<>();
 
