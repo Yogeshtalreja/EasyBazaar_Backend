@@ -30,7 +30,7 @@ public class UserService {
             if (user == null)
                 throw new ResourceNotFoundException("Email or Password is Incorrect");
             else
-                return new SignInRes(true,user.getId());
+                return new SignInRes(true,user.getId(),user.getUserType());
         }
 
     }

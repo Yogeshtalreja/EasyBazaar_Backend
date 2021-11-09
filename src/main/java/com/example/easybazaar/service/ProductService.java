@@ -13,16 +13,19 @@ import com.example.easybazaar.repository.OrderRepository;
 import com.example.easybazaar.repository.ProductVariantRepository;
 import com.example.easybazaar.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ProductService {
     private final UserRepository userRepository;
     private final ProductVariantRepository productVariantRepository;
@@ -52,23 +55,31 @@ public class ProductService {
         if (orderDto.getOrderDetails()!=null){
             List<ProductVariant> products = new ArrayList<>();
             for (OrderDetailsDto orderDetails: orderDto.getOrderDetails()) {
+
                 if (orderDetails.getProductId()==null)
                     throw new ResourceNotFoundException("Product ID is Missing");
 
-                ProductVariant product = productVariantRepository.findById(orderDetails.getProductId())
-                        .orElseThrow(()-> new ResourceNotFoundException("Product with ID "+orderDetails.getProductId()+" not Found"));
+                    ProductVariant product = productVariantRepository.productById(orderDetails.getProductId());
+                    if (product==null)
+                        throw new ResourceNotFoundException("Not Found");
+                    log.info("Locah Hai");
+
                 if (product.getAvailableQuantity() < orderDetails.getQuantity())
                     throw new ResourceNotFoundException(product.getName()+" has only "+product.getAvailableQuantity()+" Quantity");
 
                 OrderDetails newOrderDetail = new OrderDetails();
                 newOrderDetail.setProduct(product);
-                newOrderDetail.setDescription(orderDetails.getDescription());
+                if (orderDetails.getQuantity()==null)
+                    throw new ResourceNotFoundException("Enter the Quantites");
+                if (orderDetails.getDescription()!=null)
+                    newOrderDetail.setDescription(orderDetails.getDescription());
+
                 newOrderDetail.setQuantity(orderDetails.getQuantity());
 
                 newOrderDetail.setSubTotal(product.getSellPrice() * orderDetails.getQuantity());
-                products.add(product);
+
                 product.setAvailableQuantity(product.getAvailableQuantity() - orderDetails.getQuantity());
-                productVariantRepository.save(product);
+                products.add(productVariantRepository.save(product));
                 totalPrice+= (product.getSellPrice() * orderDetails.getQuantity());
                 newOrderDetail.setOrder(saveOrder);
                 orderDetailsRepository.save(newOrderDetail);

@@ -13,5 +13,6 @@ public class SignInRes {
 
     private Boolean isValid;
     private Long userId;
+    private String userType;
 
 }

@@ -4,6 +4,7 @@ import com.example.easybazaar.commonResponseModel.CommonResponseModel;
 import com.example.easybazaar.dto.*;
 import com.example.easybazaar.dto.search.SearchDto;
 
+import com.example.easybazaar.exceptions.ResourceNotFoundException;
 import com.example.easybazaar.model.ProductVariant;
 import com.example.easybazaar.model.User;
 import com.example.easybazaar.service.SellerService;
@@ -23,21 +24,9 @@ public class SellerController {
     private final SellerService sellerService;
 
     @PostMapping("/addSeller")
-    public ResponseEntity<?> addSeller(@RequestBody SellerDto sellerDto){
-        CommonResponseModel<User> responseModel = new CommonResponseModel<>();
-        try {
-            User user = sellerService.addSeller(sellerDto);
-            responseModel.setHasError(false);
-            responseModel.setMessage("Seller Response");
-            responseModel.setTotalCount(1);
-            responseModel.setData(Collections.singletonList(user));
-          return ResponseEntity.status(HttpStatus.OK).body(responseModel);
-        } catch (Exception e) {
-            responseModel.setHasError(true);
-            responseModel.setMessage("Error  = " + e.getMessage());
-            responseModel.setTotalCount(0);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
-        }
+    public User addSeller(@RequestBody SellerDto sellerDto) throws ResourceNotFoundException {
+
+            return sellerService.addSeller(sellerDto);
 
     }
 
