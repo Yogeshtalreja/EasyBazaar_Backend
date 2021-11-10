@@ -24,9 +24,21 @@ public class SellerController {
     private final SellerService sellerService;
 
     @PostMapping("/addSeller")
-    public User addSeller(@RequestBody SellerDto sellerDto) throws ResourceNotFoundException {
-
-            return sellerService.addSeller(sellerDto);
+    public ResponseEntity<?> addSeller(@RequestBody SellerDto sellerDto){
+        CommonResponseModel<User> responseModel = new CommonResponseModel<>();
+        try {
+            User user = sellerService.addSeller(sellerDto);
+            responseModel.setHasError(false);
+            responseModel.setMessage("Seller Response");
+            responseModel.setTotalCount(1);
+            responseModel.setData(Collections.singletonList(user));
+            return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+        } catch (Exception e) {
+            responseModel.setHasError(true);
+            responseModel.setMessage("Error  = " + e.getMessage());
+            responseModel.setTotalCount(0);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
+        }
 
     }
 

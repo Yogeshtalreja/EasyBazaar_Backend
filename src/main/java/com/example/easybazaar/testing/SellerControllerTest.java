@@ -24,12 +24,7 @@ import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.junit.Assert.*;
-import static org.hamcrest.Matchers.is;
-import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = SellerController.class)

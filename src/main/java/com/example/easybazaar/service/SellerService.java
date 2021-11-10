@@ -52,6 +52,7 @@ public class SellerService {
             throw new ResourceNotFoundException("CNIC is already Exists");
 
         User user = new User();
+        user.setRegistrationDate(LocalDate.now());
         addSellerInformation(sellerDto, user);
         user.setUserType(UserType.SELLER.toString());
         user.setIsActive(true);
@@ -78,7 +79,7 @@ public class SellerService {
             user.setAddress(sellerDto.getAddress());
         if (sellerDto.getCnic()!=null){
             if(!ValidationUtility.isValidNIC(sellerDto.getCnic()))
-                throw new ResourceNotFoundException("CNIC Format is Incorrect");
+                throw new ResourceNotFoundException("NIC Format is Incorrect");
             user.setCnic(sellerDto.getCnic());
         }
 
@@ -90,10 +91,7 @@ public class SellerService {
             user.setContactNumber(sellerDto.getContactNumber());
         if (sellerDto.getPassword()!=null)
             user.setPassword(AES.encrypt(sellerDto.getPassword(),"EASYBAZ"));
-        if (sellerDto.getRegistrationDate()!=null)
-            user.setRegistrationDate(sellerDto.getRegistrationDate());
         if (sellerDto.getCityId()!=null){
-
             City city = cityRepository.findById(sellerDto.getCityId()).orElseThrow(()-> new ResourceNotFoundException
                     ("City with ID "+sellerDto.getCityId()+" Not Found"));
             user.setCity(city);
