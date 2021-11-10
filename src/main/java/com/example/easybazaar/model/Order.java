@@ -1,7 +1,6 @@
 package com.example.easybazaar.model;
 
 import com.example.easybazaar.enums.OrderStatusEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;

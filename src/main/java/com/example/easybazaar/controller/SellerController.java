@@ -123,7 +123,7 @@ public class SellerController {
             List<AllSellerProductsDto> allSellerProducts = sellerService.allSellerProductsDto(searchDto, sellerId);
             responseModel.setHasError(false);
             responseModel.setMessage("Seller Product Response");
-            responseModel.setTotalCount(1);
+            responseModel.setTotalCount(allSellerProducts.size());
             responseModel.setData(allSellerProducts);
             return ResponseEntity.status(HttpStatus.OK).body(responseModel);
         } catch (Exception e) {

@@ -1,10 +1,8 @@
 package com.example.easybazaar.controller;
 
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
-import com.example.easybazaar.dto.CreateProductDto;
 import com.example.easybazaar.dto.OrderDto;
 import com.example.easybazaar.model.Order;
-import com.example.easybazaar.model.ProductVariant;
 import com.example.easybazaar.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

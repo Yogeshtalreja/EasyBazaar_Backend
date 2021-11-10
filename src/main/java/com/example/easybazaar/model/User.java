@@ -1,8 +1,7 @@
 package com.example.easybazaar.model;
 
 
-import com.example.easybazaar.enums.GenderEnum;
-import com.example.easybazaar.enums.UserType;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -10,7 +9,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor

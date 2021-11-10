@@ -1,6 +1,6 @@
 package com.example.easybazaar.dto;
 
-import com.example.easybazaar.model.City;
+
 import lombok.Getter;
 import lombok.Setter;
 
