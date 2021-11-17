@@ -2,18 +2,16 @@ package com.example.easybazaar.service;
 
 import com.example.easybazaar.dto.OrderDetailsDto;
 import com.example.easybazaar.dto.OrderDto;
+import com.example.easybazaar.dto.ProductDto;
+import com.example.easybazaar.dto.search.SearchDto;
 import com.example.easybazaar.enums.OrderStatusEnum;
 import com.example.easybazaar.exceptions.ResourceNotFoundException;
-import com.example.easybazaar.model.Order;
-import com.example.easybazaar.model.OrderDetails;
-import com.example.easybazaar.model.ProductVariant;
-import com.example.easybazaar.model.User;
-import com.example.easybazaar.repository.OrderDetailsRepository;
-import com.example.easybazaar.repository.OrderRepository;
-import com.example.easybazaar.repository.ProductVariantRepository;
-import com.example.easybazaar.repository.UserRepository;
+import com.example.easybazaar.model.*;
+import com.example.easybazaar.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,6 +29,7 @@ public class ProductService {
     private final ProductVariantRepository productVariantRepository;
     private final OrderDetailsRepository orderDetailsRepository;
     private final OrderRepository orderRepository;
+    private final ProductImagesRepository productImagesRepository;
 
     @Transactional(rollbackOn = {ResourceNotFoundException.class , Exception.class})
     public Order productPurchase(OrderDto orderDto) throws ResourceNotFoundException {
@@ -91,6 +90,24 @@ public class ProductService {
         }
 
     return orderRepository.save(saveOrder);
+    }
+
+
+    public List<ProductDto> randomAllProducts(SearchDto searchDto) throws ResourceNotFoundException {
+
+        Pageable pageable = PageRequest.of(searchDto.getPageNo(),searchDto.getPageSize());
+        List<ProductDto> products = productVariantRepository.allProducts(pageable);
+        for (ProductDto productDto:products) {
+            ProductVariant product = productVariantRepository.findById(productDto.getId())
+                    .orElseThrow(()-> new ResourceNotFoundException("Not Found"));
+
+            List<String> productImagesURL = productImagesRepository.productImagesURLs(productDto.getId());
+            productDto.setProductURLs(productImagesURL);
+            User user = userRepository.findById(product.getSellerId())
+                    .orElseThrow(()-> new ResourceNotFoundException("Seller Not Found"));
+            productDto.setSellerName(user.getName());
+        }
+        return products;
     }
 
 }
