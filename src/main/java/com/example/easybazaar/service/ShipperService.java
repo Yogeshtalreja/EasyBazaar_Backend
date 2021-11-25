@@ -30,26 +30,25 @@ public class ShipperService {
             throw new ResourceNotFoundException("NIC is Mandatory");
         if (shipperDto.getContactNumber()==null)
             throw new ResourceNotFoundException("Contact Number is Mandatory");
-
         User user = userRepository.findByEmail(shipperDto.getEmail());
         if (user!=null)
             throw new ResourceNotFoundException("User With this Email is Already Existing");
-
         User newShipper = new User();
 
         newShipper.setEmail(shipperDto.getEmail());
         newShipper.setPassword(AES.encrypt(shipperDto.getPassword(),"EASYBAZ"));
         newShipper.setCnic(shipperDto.getCnic());
         newShipper.setContactNumber(shipperDto.getContactNumber());
+        newShipper.setDob(shipperDto.getDob());
         newShipper.setIsActive(true);
         newShipper.setUserType(UserType.SHIPPER.toString());
         newShipper.setRegistrationDate(LocalDate.now());
         if(shipperDto.getAddress()!=null)
-            user.setAddress(newShipper.getAddress());
+            newShipper.setAddress(shipperDto.getAddress());
         if (shipperDto.getName()!=null)
-            user.setName(newShipper.getName());
+            newShipper.setName(shipperDto.getName());
         if (shipperDto.getDob()!=null)
-            user.setDob(newShipper.getDob());
+            newShipper.setDob(shipperDto.getDob());
         if (shipperDto.getCityId()!=null){
 
             City city = cityRepository.findById(shipperDto.getCityId()).orElseThrow(
@@ -61,8 +60,9 @@ public class ShipperService {
 
         shipperDto.setPassword(AES.encrypt(shipperDto.getPassword(),"EASYBAZ"));
 
-        userRepository.save(newShipper);
+     User savedShipper =  userRepository.save(newShipper);
 
+     shipperDto.setId(savedShipper.getId());
         return shipperDto;
     }
 
