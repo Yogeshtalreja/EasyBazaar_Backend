@@ -7,7 +7,6 @@ import com.example.easybazaar.dto.search.SearchDto;
 import com.example.easybazaar.model.Order;
 import com.example.easybazaar.service.ProductService;
 import lombok.AllArgsConstructor;
-import org.apache.catalina.LifecycleState;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

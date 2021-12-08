@@ -1,17 +1,21 @@
 package com.example.easybazaar.service;
 
 import com.example.easybazaar.dto.ShipperDto;
+import com.example.easybazaar.dto.ShipperHistoryDto;
 import com.example.easybazaar.encryption.AES;
 import com.example.easybazaar.enums.UserType;
 import com.example.easybazaar.exceptions.ResourceNotFoundException;
 import com.example.easybazaar.model.City;
 import com.example.easybazaar.model.User;
 import com.example.easybazaar.repository.CityRepository;
+import com.example.easybazaar.repository.OrderRepository;
 import com.example.easybazaar.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +23,7 @@ public class ShipperService {
 
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
+    private final OrderRepository orderRepository;
 
     public ShipperDto addShipper(ShipperDto shipperDto) throws ResourceNotFoundException {
 
@@ -64,6 +69,15 @@ public class ShipperService {
 
      shipperDto.setId(savedShipper.getId());
         return shipperDto;
+    }
+
+
+    public List<ShipperHistoryDto> findShippersHistoryByShipperId(Long shipperId){
+        List<ShipperHistoryDto> models = orderRepository.findShipperHistoryById(shipperId , "SHIPPER");
+        for (ShipperHistoryDto shipperHistoryDto:models) {
+            shipperHistoryDto.setAmount(30.0);
+        }
+    return models;
     }
 
 }

@@ -85,7 +85,7 @@ public class User {
     @OneToMany(cascade = {CascadeType.ALL},targetEntity = BankAccountDetails.class)
     private List<BankAccountDetails> bankAccountDetails;
 
-
-
+    @OneToMany(mappedBy = "shippedBy" , cascade = {CascadeType.ALL})
+    private List<Order> shippedBy;
 
 }

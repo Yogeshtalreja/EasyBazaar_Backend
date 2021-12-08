@@ -36,6 +36,9 @@ public class ProductService {
         if (orderDto.getCustomerId()==null)
             throw new ResourceNotFoundException("Customer ID is Missing");
 
+        if (orderDto.getShippingAddress()==null)
+            throw new ResourceNotFoundException("Please Enter Shipping Address First");
+
         Long totalPrice = 0L;
 
         User customer = userRepository.findByIdAndUserTypeAndIsActive(orderDto.getCustomerId(), "CUSTOMER",true);
@@ -47,6 +50,7 @@ public class ProductService {
         newOrder.setCreatedDate(LocalDate.now());
         newOrder.setStatus(OrderStatusEnum.IN_PROGRESS);
         newOrder.setDeliveredDate(LocalDate.now().plusDays(2));
+        newOrder.setShippingAddress(orderDto.getShippingAddress());
 
         Order saveOrder = orderRepository.save(newOrder);
 
