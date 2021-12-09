@@ -80,4 +80,21 @@ public class ShipperService {
     return models;
     }
 
+
+    public ShipperDto findShipperById(Long id) throws ResourceNotFoundException{
+        User shipper = userRepository.findByIdAndUserTypeAndIsActive(id,"SHIPPER",true);
+        if (shipper == null){
+            throw new ResourceNotFoundException("Shipper Not Found");
+        }
+        ShipperDto shipperDto = new ShipperDto();
+        shipperDto.setId(shipper.getId());
+        shipperDto.setCnic(shipper.getCnic());
+        shipperDto.setAddress(shipper.getAddress());
+        shipperDto.setName(shipper.getName());
+        shipperDto.setEmail(shipper.getEmail());
+        shipperDto.setContactNumber(shipper.getContactNumber());
+        shipperDto.setCityId(shipper.getCity().getId());
+
+        return shipperDto;
+    }
 }

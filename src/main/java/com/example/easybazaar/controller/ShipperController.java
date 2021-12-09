@@ -57,4 +57,24 @@ public class ShipperController {
         }
 
     }
+
+
+    @GetMapping("/findShipperById/{shipperId}")
+    public ResponseEntity<?> findShipperByID(@PathVariable("shipperId") Long shipperId){
+        CommonResponseModel<ShipperDto> responseModel = new CommonResponseModel<>();
+        try {
+            ShipperDto model = shipperService.findShipperById(shipperId);
+            responseModel.setHasError(false);
+            responseModel.setMessage("Shipper Info");
+            responseModel.setTotalCount(1);
+            responseModel.setData(Collections.singletonList(model));
+            return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+        } catch (Exception e) {
+            responseModel.setHasError(true);
+            responseModel.setMessage("Error  = " + e.getMessage());
+            responseModel.setTotalCount(0);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
+        }
+
+    }
 }
