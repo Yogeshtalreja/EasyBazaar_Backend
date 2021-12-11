@@ -1,9 +1,11 @@
 package com.example.easybazaar.controller;
 
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
+import com.example.easybazaar.dto.AllCitiesDto;
 import com.example.easybazaar.dto.ProductDto;
 import com.example.easybazaar.dto.TotalSellersCustomerDto;
 import com.example.easybazaar.dto.search.SearchDto;
+import com.example.easybazaar.service.CityService;
 import com.example.easybazaar.service.DashboardService;
 import com.example.easybazaar.service.ProductService;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ public class DashboardController {
 
     private final DashboardService dashboardService;
     private final ProductService productService;
+    private final CityService cityService;
     @GetMapping("/total")
     public ResponseEntity<?> totalSellersCustomers(){
         CommonResponseModel<TotalSellersCustomerDto> responseModel = new CommonResponseModel<>();
@@ -58,4 +61,24 @@ public class DashboardController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
         }
     }
+
+    @GetMapping("/allCities")
+    public ResponseEntity<?> allCities(){
+        CommonResponseModel<AllCitiesDto> responseModel = new CommonResponseModel<>();
+        try{
+           List<AllCitiesDto> cities = cityService.allCities();
+            responseModel.setHasError(false);
+            responseModel.setMessage("All Cities");
+            responseModel.setTotalCount(cities.size());
+            responseModel.setData(cities);
+            return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+
+        }catch (Exception e){
+            responseModel.setHasError(true);
+            responseModel.setMessage("Error  = " + e.getMessage());
+            responseModel.setTotalCount(0);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
+        }
+    }
+
 }
