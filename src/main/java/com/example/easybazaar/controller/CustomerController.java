@@ -1,5 +1,6 @@
 package com.example.easybazaar.controller;
 
+import com.example.easybazaar.Constants.Utils;
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
 import com.example.easybazaar.dto.AllCustomersDto;
 import com.example.easybazaar.dto.CustomerDto;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/customer")
 @AllArgsConstructor
+@CrossOrigin(origins = Utils.crossOrigin)
 public class CustomerController {
 
     private final CustomerService customerService;

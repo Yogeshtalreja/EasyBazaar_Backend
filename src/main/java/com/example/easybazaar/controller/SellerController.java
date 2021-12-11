@@ -1,5 +1,6 @@
 package com.example.easybazaar.controller;
 
+import com.example.easybazaar.Constants.Utils;
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
 import com.example.easybazaar.dto.*;
 import com.example.easybazaar.dto.search.SearchDto;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/seller")
+@CrossOrigin(origins = Utils.crossOrigin)
 @AllArgsConstructor
 public class SellerController {
 

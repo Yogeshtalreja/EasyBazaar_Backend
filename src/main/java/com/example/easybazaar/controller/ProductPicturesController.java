@@ -1,5 +1,6 @@
 package com.example.easybazaar.controller;
 
+import com.example.easybazaar.Constants.Utils;
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
 import com.example.easybazaar.exceptions.ResourceNotFoundException;
 import com.example.easybazaar.model.ProductImages;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = Utils.crossOrigin)
 @RequestMapping("/productImage")
 @Slf4j
 public class ProductPicturesController {

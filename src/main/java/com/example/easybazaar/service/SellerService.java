@@ -189,6 +189,7 @@ public class SellerService {
         newUser.setEmail(signUp.getEmail());
         String encryptedPassword = AES.encrypt(signUp.getPassword(), "EASYBAZ");
         newUser.setPassword(encryptedPassword);
+        newUser.setIsActive(true);
         newUser.setUserType(UserType.SELLER.toString());
         userRepository.save(newUser);
         signUp.setPassword(encryptedPassword);

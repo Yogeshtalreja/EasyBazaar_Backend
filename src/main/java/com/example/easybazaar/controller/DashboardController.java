@@ -1,5 +1,6 @@
 package com.example.easybazaar.controller;
 
+import com.example.easybazaar.Constants.Utils;
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
 import com.example.easybazaar.dto.AllCitiesDto;
 import com.example.easybazaar.dto.ProductDto;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = Utils.crossOrigin)
 @RequestMapping("/dashboard")
 public class DashboardController {
 
