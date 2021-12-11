@@ -46,7 +46,7 @@ public class ProductController {
     public ResponseEntity<?> randomProduct(@RequestBody SearchDto searchDto){
         CommonResponseModel<ProductDto> responseModel = new CommonResponseModel<>();
         try{
-            List<ProductDto> productDtos = productService.randomAllProducts(searchDto);
+            List<ProductDto> productDtos = productService.allProducts(searchDto);
             responseModel.setHasError(false);
             responseModel.setMessage("Random Products");
             responseModel.setTotalCount(productDtos.size());

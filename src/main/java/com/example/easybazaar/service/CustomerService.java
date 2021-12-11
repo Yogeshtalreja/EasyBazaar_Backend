@@ -144,6 +144,7 @@ public class CustomerService {
         newUser.setEmail(signUp.getEmail());
         String encryptedPassword = AES.encrypt(signUp.getPassword(),"EASYBAZ");
         newUser.setPassword(encryptedPassword);
+        newUser.setIsActive(true);
         newUser.setUserType(CUSTOMER.toString());
         userRepository.save(newUser);
         signUp.setPassword(encryptedPassword);

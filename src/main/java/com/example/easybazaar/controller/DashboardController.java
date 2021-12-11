@@ -49,7 +49,26 @@ public class DashboardController {
     public ResponseEntity<?> randomProduct(@RequestBody SearchDto searchDto){
         CommonResponseModel<ProductDto> responseModel = new CommonResponseModel<>();
         try{
-            List<ProductDto> productDtos = productService.randomAllProducts(searchDto);
+            List<ProductDto> productDtos = productService.allProducts(searchDto);
+            responseModel.setHasError(false);
+            responseModel.setMessage("Random Products");
+            responseModel.setTotalCount(productDtos.size());
+            responseModel.setData(productDtos);
+            return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+
+        }catch (Exception e){
+            responseModel.setHasError(true);
+            responseModel.setMessage("Error  = " + e.getMessage());
+            responseModel.setTotalCount(0);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
+        }
+    }
+
+    @PostMapping("/sortProductsByName")
+    public ResponseEntity<?> SortProductsByName(@RequestBody SearchDto searchDto){
+        CommonResponseModel<ProductDto> responseModel = new CommonResponseModel<>();
+        try{
+            List<ProductDto> productDtos = productService.allProductsSortByName(searchDto);
             responseModel.setHasError(false);
             responseModel.setMessage("Random Products");
             responseModel.setTotalCount(productDtos.size());

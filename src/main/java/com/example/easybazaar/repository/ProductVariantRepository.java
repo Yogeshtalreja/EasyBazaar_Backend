@@ -27,4 +27,7 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant,L
     @Query("SELECT new  com.example.easybazaar.dto.ProductDto(product.id,product.name,product.description,product.sellPrice,product.company) from ProductVariant product order by RAND()")
     List<ProductDto> allProducts(Pageable pageable);
 
+    @Query("SELECT new  com.example.easybazaar.dto.ProductDto(product.id,product.name,product.description,product.sellPrice,product.company) from ProductVariant product order by product.name")
+    List<ProductDto> allProductsSortByName(Pageable pageable);
+
 }

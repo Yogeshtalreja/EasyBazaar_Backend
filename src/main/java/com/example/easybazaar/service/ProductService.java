@@ -97,7 +97,7 @@ public class ProductService {
     }
 
 
-    public List<ProductDto> randomAllProducts(SearchDto searchDto) throws ResourceNotFoundException {
+    public List<ProductDto> allProducts(SearchDto searchDto) throws ResourceNotFoundException {
 
         Pageable pageable = PageRequest.of(searchDto.getPageNo(),searchDto.getPageSize());
         List<ProductDto> products = productVariantRepository.allProducts(pageable);
@@ -114,4 +114,21 @@ public class ProductService {
         return products;
     }
 
+
+    public List<ProductDto> allProductsSortByName(SearchDto searchDto) throws ResourceNotFoundException {
+
+        Pageable pageable = PageRequest.of(searchDto.getPageNo(),searchDto.getPageSize());
+        List<ProductDto> products = productVariantRepository.allProducts(pageable);
+        for (ProductDto productDto:products) {
+            ProductVariant product = productVariantRepository.findById(productDto.getId())
+                    .orElseThrow(()-> new ResourceNotFoundException("Not Found"));
+
+            List<String> productImagesURL = productImagesRepository.productImagesURLs(productDto.getId());
+            productDto.setProductURLs(productImagesURL);
+            User user = userRepository.findById(product.getSellerId())
+                    .orElseThrow(()-> new ResourceNotFoundException("Seller Not Found"));
+            productDto.setSellerName(user.getName());
+        }
+        return products;
+    }
 }
