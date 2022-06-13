@@ -7,12 +7,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class SignInRes {
+@NoArgsConstructor
+public class CityDto {
 
-    private Boolean isValid;
-    private Long userId;
-    private String userType;
 
+    private String country;
+    private String name;
+    private String lat;
+    private String lng;
 }

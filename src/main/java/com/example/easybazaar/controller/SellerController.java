@@ -1,9 +1,11 @@
 package com.example.easybazaar.controller;
 
+import com.example.easybazaar.Constants.Utils;
 import com.example.easybazaar.commonResponseModel.CommonResponseModel;
 import com.example.easybazaar.dto.*;
 import com.example.easybazaar.dto.search.SearchDto;
 
+import com.example.easybazaar.exceptions.ResourceNotFoundException;
 import com.example.easybazaar.model.ProductVariant;
 import com.example.easybazaar.model.User;
 import com.example.easybazaar.service.SellerService;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/seller")
+@CrossOrigin(origins = Utils.crossOrigin)
 @AllArgsConstructor
 public class SellerController {
 
@@ -31,7 +34,7 @@ public class SellerController {
             responseModel.setMessage("Seller Response");
             responseModel.setTotalCount(1);
             responseModel.setData(Collections.singletonList(user));
-          return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+            return ResponseEntity.status(HttpStatus.OK).body(responseModel);
         } catch (Exception e) {
             responseModel.setHasError(true);
             responseModel.setMessage("Error  = " + e.getMessage());
@@ -122,7 +125,7 @@ public class SellerController {
             List<AllSellerProductsDto> allSellerProducts = sellerService.allSellerProductsDto(searchDto, sellerId);
             responseModel.setHasError(false);
             responseModel.setMessage("Seller Product Response");
-            responseModel.setTotalCount(1);
+            responseModel.setTotalCount(allSellerProducts.size());
             responseModel.setData(allSellerProducts);
             return ResponseEntity.status(HttpStatus.OK).body(responseModel);
         } catch (Exception e) {

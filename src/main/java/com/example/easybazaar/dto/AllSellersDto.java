@@ -1,7 +1,6 @@
 package com.example.easybazaar.dto;
 
-import com.example.easybazaar.enums.UserType;
-import com.example.easybazaar.model.City;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

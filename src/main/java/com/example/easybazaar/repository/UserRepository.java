@@ -25,6 +25,8 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
      User findByEmail(String email);
 
+     User findByCnic(String cnic);
+
 
      User findByEmailAndPasswordAndAndIsActive(String email, String password, Boolean isActive);
 
