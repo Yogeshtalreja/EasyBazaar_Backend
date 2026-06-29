@@ -1,8 +1,10 @@
 package com.example.easybazaar.model;
 
+import com.example.easybazaar.enums.WearType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.*;
+import org.springframework.jca.endpoint.GenericMessageEndpointFactory;
 
 import javax.persistence.*;
 import java.util.List;

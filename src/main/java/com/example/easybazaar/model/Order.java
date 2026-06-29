@@ -1,6 +1,7 @@
 package com.example.easybazaar.model;
 
 import com.example.easybazaar.enums.OrderStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,9 +33,6 @@ public class Order {
     @Column(name = "delivere_Date")
     private LocalDate deliveredDate;
 
-    @Column(name = "shipping_address")
-    private String shippingAddress;
-
     @Column(name = "order_id")
     private String orderId;
 
@@ -43,7 +41,4 @@ public class Order {
 
     @OneToOne
     private Invoice invoice;
-
-    @ManyToOne
-    private User shippedBy;
 }

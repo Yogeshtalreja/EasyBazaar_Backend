@@ -2,6 +2,7 @@ package com.example.easybazaar.dto;
 
 import com.example.easybazaar.enums.UserType;
 import com.example.easybazaar.model.BankAccountDetails;
+import com.example.easybazaar.model.City;
 import com.example.easybazaar.model.ProductVariant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

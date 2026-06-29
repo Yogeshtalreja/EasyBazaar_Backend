@@ -1,7 +1,6 @@
 package com.example.easybazaar.repository;
 
 import com.example.easybazaar.dto.AllSellerProductsDto;
-import com.example.easybazaar.dto.ProductDto;
 import com.example.easybazaar.model.ProductVariant;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,14 +19,4 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant,L
      ProductVariant findByIdAndSellerId(Long id, Long sellerId);
 
      List<ProductVariant> findBySellerId(Long sellerId);
-
-    @Query("SELECT product from ProductVariant product where product.id=?1")
-     ProductVariant productById(Long id);
-
-    @Query("SELECT new  com.example.easybazaar.dto.ProductDto(product.id,product.name,product.description,product.sellPrice,product.company) from ProductVariant product order by RAND()")
-    List<ProductDto> allProducts(Pageable pageable);
-
-    @Query("SELECT new  com.example.easybazaar.dto.ProductDto(product.id,product.name,product.description,product.sellPrice,product.company) from ProductVariant product order by product.name")
-    List<ProductDto> allProductsSortByName(Pageable pageable);
-
 }
