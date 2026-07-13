@@ -23,6 +23,5 @@ public class CreateProductDto {
     private Long regularPrice;
     private Long availableQuantity;
     private List<Long> availableColors;
-    private LocalDate expiryDate;
 
 }
